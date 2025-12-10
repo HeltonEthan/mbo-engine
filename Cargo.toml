@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+chrono = "0.4.42"
 color-eyre = "0.6.5"
 dbn = "0.44.0"
 dbn-cli = "0.44.0"
@@ -11,3 +12,4 @@ dbn-macros = "0.44.0"
 fallible-streaming-iterator = "0.1.9"
 indexmap = "2.12.1"
 smallvec = "1.15.1"
+zstd = "0.13.3"
