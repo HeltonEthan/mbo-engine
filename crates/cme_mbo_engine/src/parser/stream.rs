@@ -12,7 +12,6 @@ use dbn::{
 use fallible_streaming_iterator::FallibleStreamingIterator;
 use std::{fs::File, io::BufReader, path::PathBuf};
 
-
 /// Run is the entry point of the engine
 /// 
 /// It iterates through each file and creates a dbn stream for each,
