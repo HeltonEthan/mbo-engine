@@ -1,5 +1,5 @@
 use crate::config::Config;
-use crate::parser::dbn;
+use crate::parser::stream;
 use std::ffi::OsStr;
 use std::{fs, num::NonZero, path::PathBuf};
 
@@ -13,7 +13,7 @@ pub fn get_files(config: &Config) -> anyhow::Result<Vec<PathBuf>> {
         if !path.is_file() || path.extension() != Some(OsStr::new("zst")) {
             continue;
         }
-        let file_metadata = dbn::decode_metadata(&path)?;
+        let file_metadata = stream::decode_metadata(&path)?;
         if config.start_unix()? <= file_metadata.start && file_metadata.start <= config.end_unix()?
             || Some(NonZero::new(config.start_unix()?).unwrap()) <= file_metadata.end
                 && file_metadata.end <= Some(NonZero::new(config.end_unix()?).unwrap())
