@@ -41,7 +41,7 @@ pub fn run<F: FnMut(&MboMsg) -> Signal>(mut logic: F, cfg: &Config) -> anyhow::R
     Ok(())
 }
 
-// Returns the metadata of a path.
+/// Returns the metadata of a path.
 pub fn decode_metadata(path: &PathBuf) -> anyhow::Result<dbn::Metadata> {
     let reader = zstd::stream::Decoder::new(BufReader::new(File::open(path)?)).unwrap();
     Ok(MetadataDecoder::new(reader).decode()?)
