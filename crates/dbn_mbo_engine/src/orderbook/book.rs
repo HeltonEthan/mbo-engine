@@ -46,7 +46,7 @@ impl Book {
                     level.push_back(mbo);
                 },
                 Some((old_side, old_price)) => {
-                    self.remove_level(old_side, old_price);
+                    Self::remove_order(self.level_mut(old_side, old_price), mbo.order_id);
                     let level = self.get_or_insert_level(side, price);
                     level.push_back(mbo);
                 },
