@@ -40,10 +40,17 @@ impl Book {
                 levels.insert(price, VecDeque::from([mbo]));
             }
         } else {
-            assert_ne!(price, UNDEF_PRICE);
-            assert!(self.orders_by_id.insert(mbo.order_id, (side, price)).is_none());
-            let level: &mut Level = self.get_or_insert_level(side, price);
-            level.push_back(mbo);
+            match self.orders_by_id.insert(mbo.order_id, (side, price)) {
+                None => {
+                    let level = self.get_or_insert_level(side, price);
+                    level.push_back(mbo);
+                },
+                Some((old_side, old_price)) => {
+                    self.remove_level(old_side, old_price);
+                    let level = self.get_or_insert_level(side, price);
+                    level.push_back(mbo);
+                }
+            }
         }
     }
 

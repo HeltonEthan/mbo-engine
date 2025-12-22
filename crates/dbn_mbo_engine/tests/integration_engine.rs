@@ -10,11 +10,10 @@ fn engine_test() -> anyhow::Result<()> {
     let cfg = Config::new(
         PathBuf::from("C:/Users/helto/GLBX-20250915-NGKNUL4VBG"),
         NaiveDate::from_ymd_opt(2025, 05, 12).unwrap(),
-        NaiveDate::from_ymd_opt(2025, 05, 14).unwrap(),
+        NaiveDate::from_ymd_opt(2025, 08, 11).unwrap(),
         0,
     );
-    let mut latency = UnitNormalLatency::new(25_000_000, 1_000_000);
-    run(logic, &cfg, &mut latency)?;
+    run(&cfg, || logic, || UnitNormalLatency::new(25_000_000, 1_000_000))?;
     Ok(())
 }
 
