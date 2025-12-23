@@ -1,4 +1,4 @@
-pub mod matching;
-pub mod market;
-pub mod submit;
 pub mod book;
+pub mod market;
+pub mod matching;
+pub mod submit;

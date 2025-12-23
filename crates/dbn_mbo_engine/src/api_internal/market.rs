@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use crate::api_internal::{book::{Active, Inactive, Queue}};
+use crate::api_internal::book::{Active, Inactive, Queue};
 
 #[derive(Debug, Default)]
 pub struct Books {
@@ -13,6 +13,4 @@ impl Books {
     pub fn new() -> Self {
         Self::default()
     }
-
-    
 }

@@ -1,2 +1,4 @@
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub enum Ack {}
+pub enum Ack {
+    Rejected,
+}

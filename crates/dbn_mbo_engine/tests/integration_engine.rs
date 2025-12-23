@@ -1,7 +1,7 @@
 use chrono::NaiveDate;
 use dbn::record::MboMsg;
 use dbn_mbo_engine::{
-    api::{action::Request, latency::UnitNormalLatency},
+    api::{ack::Ack, action::Request, latency::UnitNormalLatency},
     prelude::*,
 };
 use std::path::PathBuf;
@@ -16,11 +16,21 @@ fn engine_test() -> anyhow::Result<()> {
         NaiveDate::from_ymd_opt(2025, 08, 12).unwrap(),
         0,
     );
-    run(&cfg, || logic, || UnitNormalLatency::new(25_000_000, 1_000_000))?;
+    run(
+        &cfg,
+        || logic,
+        || rx_ack,
+        || UnitNormalLatency::new(25_000_000, 1_000_000),
+    )?;
     Ok(())
 }
 
 fn logic(mbo: &MboMsg) -> Option<Request> {
     _ = mbo;
     None
+}
+
+fn rx_ack(ack: Ack) {
+    _ = ack;
+    todo!()
 }

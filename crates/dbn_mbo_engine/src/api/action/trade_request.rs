@@ -26,5 +26,6 @@ impl Submit for TradeRequest {
             Some(self.price),
             Some(self.size),
         );
+        todo!()
     }
 }
