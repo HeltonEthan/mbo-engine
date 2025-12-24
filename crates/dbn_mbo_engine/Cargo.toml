@@ -1,13 +1,10 @@
 [package]
 name = "dbn_mbo_engine"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2024"
 
 [dependencies]
-chrono = { workspace = true }
 anyhow = { workspace = true }
 dbn = { workspace = true }
-fallible-streaming-iterator = { workspace = true }
 zstd = { workspace = true }
-rand = { workspace = true }
-rayon = { workspace = true }
+fallible-streaming-iterator = { workspace = true }
