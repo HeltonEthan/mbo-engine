@@ -163,6 +163,7 @@ where
     Ok(())
 }
 
+#[allow(unused)]
 pub struct Mbo {
     ts_recv: u64,
     ts_event: u64,
