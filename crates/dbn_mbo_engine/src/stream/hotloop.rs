@@ -38,7 +38,7 @@ macro_rules! iterstream {
     }};
 }
 
-/// Factory bundle for creating per-worker receivers/handlers.
+/// Factory struct for creating per worker receivers/handlers.
 ///
 /// Each worker thread gets its own:
 /// - `RM`: handler for [`Mbo`] messages
@@ -48,12 +48,8 @@ pub struct RxMsg<MF, AF> {
     pub make_ra: AF,
 }
 
-/// A simple fixed-size thread pool that routes [`Mbo`] messages to workers
-/// using a ring-buffer per worker (SPSC queue).
-///
-/// # Routing
-/// Messages are routed by:
-/// `worker_index = (instrument_id as usize) & mask`
+/// A simple fixed-size thread pool that routes [`Mbo`] messages to workers,
+/// SPSC queue.
 pub struct ThreadPool {
     producers: Vec<Producer<Mbo>>,
     _handles: Vec<thread::JoinHandle<()>>,
@@ -94,21 +90,9 @@ impl ThreadPool {
         }
     }
 
-    /// Dispatch a message to the worker responsible for its `instrument_id`.
+    /// Dispatch a message, spin waiting until it can be enqueued.
     ///
-    /// # Lossy behavior
-    /// If the worker's queue is full, the message is dropped.
-    #[allow(dead_code)]
-    #[inline]
-    pub fn dispatch(&mut self, mbo: Mbo) {
-        let idx = (mbo.instrument_id as usize) & self.mask;
-        let _ = self.producers[idx].push(mbo);
-    }
-
-    /// Dispatch a message, spin-waiting until it can be enqueued.
-    ///
-    /// This guarantees delivery to the worker queue, but can burn CPU
-    /// under sustained backpressure.
+    /// This ensures delivery to the worker queue
     #[inline]
     pub fn dispatch_lossless(&mut self, mut mbo: Mbo) {
         let idx = (mbo.instrument_id as usize) & self.mask;
@@ -140,10 +124,8 @@ impl Drop for ThreadPool {
 
 /// Worker loop for a single consumer queue.
 ///
-/// Spins while `running` is true; drains remaining messages after shutdown.
-///
 /// # Performance note
-/// Uses spin-waiting when the queue is empty. This is low-latency but can
+/// Uses spin waiting when the queue is empty. Can
 /// consume 100% CPU per idle thread.
 fn worker_loop<RM, RA>(
     _worker_idx: usize,
@@ -173,7 +155,7 @@ fn worker_loop<RM, RA>(
 
 /// Run the DBN stream processing pipeline:
 /// - builds a [`ThreadPool`]
-/// - iterates DBN/ZST files in `cfg.dir` within `[cfg.start, cfg.end)`
+/// - iterates DBN/ZST files in `cfg.dir`
 /// - dispatches each record to a worker
 /// - shuts down the pool at the end
 #[allow(dead_code)]
@@ -197,7 +179,7 @@ where
     Ok(())
 }
 
-/// Owned, compact representation of an MBO record used by the worker threads.
+/// Owned, compact MBO record used by the worker threads.
 #[allow(unused)]
 pub struct Mbo {
     ts_recv: u64,
