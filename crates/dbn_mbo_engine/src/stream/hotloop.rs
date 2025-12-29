@@ -182,16 +182,16 @@ where
 /// Owned, compact MBO record used by the worker threads.
 #[allow(unused)]
 pub struct Mbo {
-    ts_recv: u64,
-    ts_event: u64,
-    publisher_id: u16,
-    instrument_id: u32,
-    action: i8,
-    side: i8,
-    price: i64,
-    size: u32,
-    order_id: u64,
-    flags: FlagSet,
+    pub ts_recv: u64,
+    pub ts_event: u64,
+    pub publisher_id: u16,
+    pub instrument_id: u32,
+    pub action: i8,
+    pub side: i8,
+    pub price: i64,
+    pub size: u32,
+    pub order_id: u64,
+    pub flags: FlagSet,
 }
 
 impl From<&MboMsg> for Mbo {

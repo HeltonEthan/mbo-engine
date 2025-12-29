@@ -10,3 +10,4 @@ zstd = { workspace = true }
 fallible-streaming-iterator = { workspace = true }
 rtrb = { workspace = true }
 chrono = { workspace = true }
+hashbrown = { workspace = true }
