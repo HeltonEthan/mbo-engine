@@ -4,6 +4,7 @@ use dbn::{
     record::MboMsg,
 };
 use fallible_streaming_iterator::FallibleStreamingIterator;
+use hashbrown::HashMap;
 use rtrb::{Consumer, PopError, Producer, PushError, RingBuffer};
 use std::{
     hint,
@@ -13,10 +14,12 @@ use std::{
     },
     thread,
 };
-use hashbrown::HashMap;
 
 use crate::{
-    config::Config, enums::Ack, orderbook::book::{Book, LobMbo}, stream::{Ext, process_dir}
+    config::Config,
+    enums::Ack,
+    orderbook::book::{Book, LobMbo},
+    stream::{Ext, process_dir},
 };
 
 /// Helper macro to iterate a DBN `DecodeStream` within the configured time window
@@ -102,7 +105,7 @@ impl ThreadPool {
                 Err(PushError::Full(returned)) => {
                     mbo = returned;
                     hint::spin_loop();
-                }
+                },
             }
         }
         panic!("ThreadPool stopped while dispatching");
